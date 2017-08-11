@@ -109,3 +109,5 @@ static/
 *ico
 *.txt
 .txt
+backend/lib/
+backend/lib
