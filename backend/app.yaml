@@ -13,6 +13,6 @@ handlers:
   static_files: core/static\1
   upload: core/static.*
 
-#- url: .*
-#  script: core.main.app
+- url: .*
+  script: core.main.app
 
