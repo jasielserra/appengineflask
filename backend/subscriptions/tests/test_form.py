@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from subscriptions.handlers import app
 import pytest
 
 
 @pytest.fixture
-def resp():
-    client = app.test_client()
-    return client.get('/inscricao')
+def resp(test_client):
+    return test_client.get('/inscricao/')
 
 def test_status_code(resp):
     assert 200 == resp.status_code

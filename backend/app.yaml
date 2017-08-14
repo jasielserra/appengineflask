@@ -13,8 +13,8 @@ handlers:
   static_files: core/static\1
   upload: core/static.*
 
-- url: /inscricao.*
-  script: subscriptions.handlers.app
+#- url: /inscricao.*
+#  script: subscriptions.handlers.app
 
 - url: .*
   script: core.main.app
