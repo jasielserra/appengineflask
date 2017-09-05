@@ -21,5 +21,5 @@ def test_status_code(resp):
 )
 
 def test_content(content, resp):
-    assert content in resp.data
+    assert content in resp.data.decode('utf8')
 
