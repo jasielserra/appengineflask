@@ -30,3 +30,9 @@ def test_new_link_in_action(resp):
     action_attr = 'action="%s"' % action_path
     assert action_attr in resp.data.decode('utf8')
 
+def test_new_status_code(test_client):
+    resp = test_client.post(url_for('subscriptions.new'),
+                     data = {'name': 'Jasiel Serra','cpf':'21345623454',
+                             'email':'jasielserra@gmail.com'})
+    assert 200 == resp.status_code
+

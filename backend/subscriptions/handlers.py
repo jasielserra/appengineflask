@@ -10,6 +10,6 @@ blueprint = Blueprint('subscriptions', __name__, template_folder='templates')
 def form():
     return render_template('subscriptions_form.html')
 
-@blueprint.route("/nova")
+@blueprint.route("/nova", methods=['POST'])
 def new():
-    pass
+    return 'OK'
