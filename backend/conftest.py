@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import, unicode_literals
-
 import pytest
 
 import config_blueprints
 from core.main import app
+from google.appengine.ext.testbed import Testbed
 
 app.config.update(SERVER_NAME='localhost')
 
@@ -19,3 +19,12 @@ def test_client():
 def app_context():
     with app.app_context() as context:
         yield context
+
+@pytest.fixture(autouse=True)
+def testbed():
+    tb = Testbed()
+    tb.activate()
+    tb.init_datastore_v3_stub()
+    tb.init_memcache_stub()
+    yield tb
+    tb.deactivate()
