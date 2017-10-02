@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import, unicode_literals
-
-from flask import Blueprint, render_template
-
+from flask import Blueprint, render_template, request
 from subscriptions.model import Subscription
 
 blueprint = Blueprint('subscriptions', __name__, template_folder='templates')
@@ -14,6 +12,8 @@ def form():
 
 @blueprint.route("/nova", methods=['POST'])
 def new():
-    subscription = Subscription()
+    form = request.form
+    subscription = Subscription(
+        name=form['name'], cpf=form['cpf'], email=form['email'])
     subscription.put()
     return 'OK'
