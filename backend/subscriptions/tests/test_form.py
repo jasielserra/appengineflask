@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 
 import ndb
 import pytest
+from datetime import datetime
 from flask import url_for
 
 from subscriptions.model import Subscription
@@ -42,7 +43,7 @@ def resp_new(test_client):
     return resp
 
 def test_new_status_code(resp_new):
-    assert 200 == resp_new.status_code
+    assert 302 == resp_new.status_code
 
 def test_new_save(resp_new):
     query = Subscription.query()
@@ -56,6 +57,8 @@ def test_form_properties(resp_new):
     assert subscription.email == 'jasiel_serra@hotmail.com'
     assert isinstance(subscription.creation, datetime)
     assert isinstance(subscription.key, ndb.Key)
+    assert isinstance(subscription.key.id(), long)
+    assert subscription.key.kind() == 'Subscription'
 
 
 
