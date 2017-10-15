@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import absolute_import, unicode_literals
+from google.appengine.ext import ndb
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from subscriptions.model import Subscription
 
@@ -15,18 +15,23 @@ def new():
     form = request.form
     subscription = Subscription(
         name=form['name'], cpf=form['cpf'], email=form['email'])
-    subscription.put()
-    return redirect(url_for('.ok', _external=False))
+    key = subscription.put()
+    return redirect(url_for('.ok', _external=False, sub_id=key.id()))
 
-@blueprint.route("/ok")
-def ok():
-    query=Subscription.query().order(-Subscription.creation)
-    last_subscription = query.get()
+@blueprint.route("/ok/<int:sub_id>")
+def ok(sub_id):
+    subscription = ndb.Key('Subscription', sub_id).get()
     dct = {
-        'id':last_subscription.key.id(),
-        'name':last_subscription.name,
-        'cpf':last_subscription.cpf,
-        'email':last_subscription.email,
-        'creation': last_subscription.creation.strftime('%Y-%m-%DT%H:%M:%S'),
+        'id':subscription.key.id(),
+        'name':subscription.name,
+        'cpf':subscription.cpf,
+        'email':subscription.email,
+        'creation':subscription.creation.strftime('%Y-%m-%DT%H:%M:%S'),
     }
     return jsonify(dct)
+
+@blueprint.route("/listar")
+def subscription_list():
+    subscriptions = Subscription.query().order(-Subscription.creation).fetch()
+    return render_template('subscriptions_list.html',
+                           subscriptions=subscriptions)
